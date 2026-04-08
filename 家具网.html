@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="探索椅子、桌子、床、柜子的千年历史与工艺，古典家具文化展示，支持收藏与订阅。">
+    <title>木韵千年 | 古韵家具 · 时光收藏</title>
+    <style>
+        /* ---------- CSS 变量 (市场风格统一) ---------- */
+        :root {
+            --primary-dark: #5c3e2b;
+            --primary-gold: #d9a13b;
+            --primary-light: #fef7e8;
+            --card-bg: #ffffff;
+            --text-dark: #2c2418;
+            --text-soft: #4a3a2a;
+            --accent-orange: #b45f2b;
+            --nav-bg: #fff6ea;
+            --footer-bg: #2b211a;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px rgba(0,0,0,0.05);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: var(--primary-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 头部 */
+        .header {
+            background: var(--primary-dark);
+            color: #fef0df;
+            padding: 2rem 0 1.5rem;
+            text-align: center;
+            border-bottom: 6px solid var(--primary-gold);
+            box-shadow: var(--shadow-sm);
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* 面包屑导航 */
+        .breadcrumb {
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            color: var(--text-soft);
+        }
+        .breadcrumb a {
+            color: var(--accent-orange);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* 吸顶导航栏 */
+        .nav-bar {
+            background: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #eedfcb;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.2rem;
+            flex-wrap: wrap;
+            padding: 0.8rem 1rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--primary-dark);
+            padding: 0.4rem 0.8rem;
+            transition: var(--transition);
+            border-radius: 40px;
+            font-size: 1rem;
+        }
+        .nav-links a:hover {
+            background-color: #e7dac8;
+            color: var(--accent-orange);
+            transform: translateY(-2px);
+        }
+        .nav-links a.active {
+            background-color: var(--primary-gold);
+            color: var(--text-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        /* 引言区 */
+        .intro {
+            text-align: center;
+            margin: 2rem 0 2rem;
+            padding: 1rem;
+            background: #f7efe2;
+            border-radius: 48px;
+        }
+        .intro h2 {
+            font-size: 1.8rem;
+            color: #4d2f1c;
+            margin-bottom: 0.75rem;
+        }
+
+        /* 家具卡片 */
+        .furniture-card {
+            background: var(--card-bg);
+            border-radius: 32px;
+            box-shadow: var(--shadow-md), 0 4px 8px rgba(0,0,0,0.02);
+            margin-bottom: 3rem;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            position: relative;
+        }
+        .furniture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(92,62,43,0.2);
+        }
+
+        /* 收藏按钮 */
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,240,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 5;
+            backdrop-filter: blur(4px);
+            color: #aaa;
+        }
+        .favorite-btn:hover {
+            transform: scale(1.1);
+        }
+        .favorite-btn.active {
+            color: #e74c3c;
+        }
+
+        .furniture-inner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            padding: 2rem;
+            align-items: center;
+        }
+
+        .furniture-figure {
+            flex: 1.2;
+            min-width: 220px;
+            text-align: center;
+            background: #faf3e9;
+            border-radius: 28px;
+            padding: 1rem;
+        }
+        .furniture-figure img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 20px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .furniture-figure img:hover {
+            transform: scale(1.02);
+        }
+        .fig-caption {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: #8b694c;
+            font-weight: 500;
+        }
+
+        .furniture-info {
+            flex: 2.2;
+            min-width: 260px;
+        }
+        .furniture-info h3 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #4d2f1c;
+            border-left: 6px solid var(--primary-gold);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 评分样式 */
+        .rating {
+            margin: 0.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stars {
+            color: #f5b642;
+            letter-spacing: 2px;
+            font-size: 1rem;
+        }
+        .rating-value {
+            font-weight: bold;
+            color: var(--accent-orange);
+        }
+        .rating-count {
+            font-size: 0.85rem;
+            color: #7f6b4a;
+        }
+
+        .history, .development, .usage {
+            margin-bottom: 0.9rem;
+        }
+        .history strong, .development strong, .usage strong {
+            color: var(--accent-orange);
+            font-size: 1rem;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .history p, .development p, .usage p {
+            display: inline;
+            font-size: 0.96rem;
+            color: var(--text-dark);
+        }
+        .usage ul {
+            margin-top: 6px;
+            padding-left: 1.4rem;
+            list-style-type: square;
+        }
+        .usage li {
+            font-size: 0.95rem;
+            margin: 4px 0;
+            color: #3e2c1c;
+        }
+
+        .buy-section {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            border-top: 1px dashed #eedfcb;
+            padding-top: 1.2rem;
+        }
+        .price {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            background: #fef3e4;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            display: inline-block;
+        }
+        .btn-buy {
+            background-color: #8b5a2b;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 0.7rem 1.8rem;
+            border-radius: 48px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .btn-buy:hover {
+            background-color: #a06e3a;
+            transform: scale(1.02);
+        }
+        .btn-buy:active {
+            transform: scale(0.98);
+        }
+
+        /* 交替布局 */
+        .furniture-card:nth-child(even) .furniture-inner {
+            flex-direction: row-reverse;
+        }
+        /* 锚点偏移 */
+        #chair, #table, #bed, #cabinet {
+            scroll-margin-top: 80px;
+        }
+
+        /* 回到顶部按钮 */
+        .go-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-gold);
+            color: var(--primary-dark);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            z-index: 99;
+            border: none;
+            font-size: 1.5rem;
+        }
+        .go-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .go-top:hover {
+            background-color: #c78a2c;
+            transform: translateY(-3px);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--footer-bg);
+            color: #e7d9cc;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 2.5rem;
+            border-radius: 40px 40px 0 0;
+            font-size: 0.85rem;
+        }
+        .footer a {
+            color: #e7b874;
+            text-decoration: none;
+        }
+        .newsletter {
+            max-width: 400px;
+            margin: 1.5rem auto 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .newsletter input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 48px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .newsletter button {
+            background: var(--primary-gold);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 48px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .newsletter button:hover {
+            background: #c78a2c;
+            transform: scale(1.02);
+        }
+        .attribution {
+            margin-top: 1.5rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .furniture-card:nth-child(even) .furniture-inner {
+                flex-direction: column;
+            }
+            .furniture-inner {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .favorite-btn {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+            .go-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <h1>🪑 木韵千年 · 古韵家具</h1>
+        <p>穿越时光的工艺 | 每一件家具都承载文明的故事</p>
+    </div>
+</header>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="nav-links">
+            <a href="#chair" data-section="chair">🪑 椅子 · 坐的智慧</a>
+            <a href="#table" data-section="table">🪵 桌子 · 聚合之台</a>
+            <a href="#bed" data-section="bed">🛏️ 床 · 安眠之榻</a>
+            <a href="#cabinet" data-section="cabinet">🗄️ 柜子 · 收纳艺术</a>
+        </div>
+    </div>
+</div>
+
+<main class="container">
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <a href="#">首页</a> &gt; <a href="#">家具百科</a> &gt; <span>古韵家具</span>
+    </div>
+
+    <div class="intro">
+        <h2>📜 古韵匠心 · 家具中的历史长河</h2>
+        <p>从古埃及的折叠椅到明清太师椅，从罗马大理石桌到中式八仙桌，家具承载着人类文明与审美。以下四类经典家具，配以古朴影像，带您感受岁月沉淀的木作之美。</p>
+    </div>
+
+    <!-- 家具1：椅子 -->
+    <section id="chair" class="furniture-card">
+        <button class="favorite-btn" data-id="chair">♡</button>
+        <div class="furniture-inner">
+            <div class="furniture-figure">
+                <img src="../images\yizi.png" alt="古典实木椅子" loading="lazy"
+                    onerror="this.onerror=null; this.src='https://placehold.co/400x300/8b694c/fef0df?text=古韵木椅';">
+                <div class="fig-caption">🏺 古董温莎椅 · 百年匠心的坐具</div>
+            </div>
+            <div class="furniture-info">
+                <h3>🪑 椅子 · 权力的坐席到日常舒适</h3>
+                <div class="rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-value">4.9</span>
+                    <span class="rating-count">(328条评价)</span>
+                </div>
+                <div class="history"><strong>📜 历史简介：</strong><p>椅子的历史可追溯至古埃及，最早的折叠椅象征权力与地位。古希腊的“克里斯莫斯椅”线条优雅，古罗马人将椅子普及至贵族家庭。中世纪时出现高背椅，文艺复兴后椅子逐渐成为大众家具。中国明清时期的太师椅更是工艺巅峰。</p></div>
+                <div class="development"><strong>⚙️ 发展与革新：</strong><p>从手工雕刻到工业革命的蒸汽弯曲技术，再到20世纪伊姆斯椅的塑料模压成型，现代人体工学椅融合材质、科技与健康理念。</p></div>
+                <div class="usage"><strong>🏠 主要用途：</strong>
+                    <ul><li>日常坐憩、用餐与办公</li><li>社交场合的舒适支持</li><li>装饰空间，彰显风格</li></ul>
+                </div>
+                <div class="buy-section">
+                    <span class="price">¥ 899</span>
+                    <button class="btn-buy" onclick="window.open('https://s.taobao.com/search?q=%E5%AE%9E%E6%9C%A8%E6%A4%85%E5%AD%90+%E5%8F%A4%E5%85%B8', '_blank')">🛍️ 立即购买</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 家具2：桌子 -->
+    <section id="table" class="furniture-card">
+        <button class="favorite-btn" data-id="table">♡</button>
+        <div class="furniture-inner">
+            <div class="furniture-figure">
+                <img src="../images/zhuzi.jpg" alt="复古实木长桌" loading="lazy"
+                    onerror="this.onerror=null; this.src='https://placehold.co/400x300/8b694c/fef0df?text=古韵餐桌';">
+                <div class="fig-caption">🍂 老橡木桌 · 承载家族记忆的食案</div>
+            </div>
+            <div class="furniture-info">
+                <h3>🪵 桌子 · 从祭台到生活核心</h3>
+                <div class="rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-value">4.7</span>
+                    <span class="rating-count">(512条评价)</span>
+                </div>
+                <div class="history"><strong>📜 历史简介：</strong><p>桌子起源于古埃及、古希腊的低矮供桌，古罗马人发明了可移动大理石餐桌。中世纪庄园使用粗犷的搁板桌，文艺复兴时期出现精雕细琢的宴会桌。</p></div>
+                <div class="development"><strong>⚙️ 发展与革新：</strong><p>工业革命催生折叠桌与伸缩桌；20世纪现代主义推崇极简几何形态。如今智能升降桌满足多元需求。</p></div>
+                <div class="usage"><strong>🏠 主要用途：</strong>
+                    <ul><li>家庭聚餐、会议办公</li><li>学习与创意工作台</li><li>陈列艺术品与装饰中心</li></ul>
+                </div>
+                <div class="buy-section">
+                    <span class="price">¥ 1699</span>
+                    <button class="btn-buy" onclick="window.open('https://s.taobao.com/search?q=%E5%AE%9E%E6%9C%A8%E9%95%BF%E6%A1%8C+%E5%8F%A4%E6%9C%B4', '_blank')">🛍️ 立即购买</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 家具3：床 -->
+    <section id="bed" class="furniture-card">
+        <button class="favorite-btn" data-id="bed">♡</button>
+        <div class="furniture-inner">
+            <div class="furniture-figure">
+                <img src="../images/chuang.jpg" alt="复古木质床" loading="lazy"
+                    onerror="this.onerror=null; this.src='https://placehold.co/400x300/8b694c/fef0df?text=古韵木床';">
+                <div class="fig-caption">🌙 四柱古董床 · 旧时光里的温柔梦境</div>
+            </div>
+            <div class="furniture-info">
+                <h3>🛏️ 床 · 休憩文明的温柔容器</h3>
+                <div class="rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-value">4.9</span>
+                    <span class="rating-count">(1.2k条评价)</span>
+                </div>
+                <div class="history"><strong>📜 历史简介：</strong><p>古埃及人用棕榈木制作高脚床，古罗马卧榻奢华镶嵌象牙。中世纪欧洲出现带华盖的四柱床，中国明清架子床精雕细琢。</p></div>
+                <div class="development"><strong>⚙️ 发展与革新：</strong><p>19世纪螺旋弹簧床垫诞生，现代智能床可调节角度、监测睡眠，融合记忆棉、乳胶等创新。</p></div>
+                <div class="usage"><strong>🏠 主要用途：</strong>
+                    <ul><li>夜间睡眠与午间小憩</li><li>放松身心、恢复精力</li><li>卧室核心软装与温馨感</li></ul>
+                </div>
+                <div class="buy-section">
+                    <span class="price">¥ 3499</span>
+                    <button class="btn-buy" onclick="window.open('https://s.taobao.com/search?q=%E5%AE%9E%E6%9C%A8%E5%BA%8A+%E5%8F%A4%E5%85%B8', '_blank')">🛍️ 立即购买</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 家具4：柜子 -->
+    <section id="cabinet" class="furniture-card">
+        <button class="favorite-btn" data-id="cabinet">♡</button>
+        <div class="furniture-inner">
+            <div class="furniture-figure">
+                <img src="../images/guizi.jpg" alt="古董实木柜" loading="lazy"
+                    onerror="this.onerror=null; this.src='https://placehold.co/400x300/8b694c/fef0df?text=古韵柜子';">
+                <div class="fig-caption">🗝️ 老橱柜 · 收纳时光的秘密</div>
+            </div>
+            <div class="furniture-info">
+                <h3>🗄️ 柜子 · 从箱柜到收纳艺术</h3>
+                <div class="rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-value">4.8</span>
+                    <span class="rating-count">(756条评价)</span>
+                </div>
+                <div class="history"><strong>📜 历史简介：</strong><p>柜子源于古埃及与罗马的储物箱，中世纪出现大型衣柜，哥特式和文艺复兴风格让柜子成为雕刻艺术。中国明代顶箱柜工艺精湛。</p></div>
+                <div class="development"><strong>⚙️ 发展与革新：</strong><p>工业时代板式家具普及，现代柜子结合模块化设计与隐藏式收纳，智能感应灯光让空间利用更高效。</p></div>
+                <div class="usage"><strong>🏠 主要用途：</strong>
+                    <ul><li>衣物、寝具及日常用品收纳</li><li>客厅/书房展示藏品与书籍</li><li>空间分区与整洁美学</li></ul>
+                </div>
+                <div class="buy-section">
+                    <span class="price">¥ 1999</span>
+                    <button class="btn-buy" onclick="window.open('https://s.taobao.com/search?q=%E5%AE%9E%E6%9C%A8%E5%82%A8%E7%89%A9%E6%9F%9C+%E5%8F%A4%E5%85%B8', '_blank')">🛍️ 立即购买</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 选购小贴士 -->
+    <div style="background: #f6ede2; border-radius: 28px; padding: 1.5rem; margin: 1rem 0 2rem;">
+        <h3 style="color:#5c3e2b; display: flex; align-items: center; gap: 8px;">📦 古韵家居小贴士 · 如何选到心仪的古典家具？</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 12px;">
+            <span style="background: #fff; border-radius: 32px; padding: 0.4rem 1rem;">✅ 观察木纹与包浆</span>
+            <span style="background: #fff; border-radius: 32px; padding: 0.4rem 1rem;">✅ 榫卯结构更耐久</span>
+            <span style="background: #fff; border-radius: 32px; padding: 0.4rem 1rem;">✅ 搭配中式或复古软装</span>
+            <span style="background: #fff; border-radius: 32px; padding: 0.4rem 1rem;">✅ 兼顾历史风格与现代舒适</span>
+        </div>
+        <p style="margin-top: 12px;">💡 古典家具不仅是器物，更是文化与匠心的传承。选择一件有故事的古朴家具，让家充满岁月的温度。</p>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>🪵 古韵家具博物馆 | 传承匠心 · 东方与西方木艺</p>
+        <div class="newsletter">
+            <input type="email" placeholder="您的邮箱，获取新品资讯" id="newsEmail">
+            <button id="subscribeBtn">订阅</button>
+        </div>
+        <div class="attribution">
+            <p>✨ “家具是沉默的见证者，承载着每一个家庭的温暖记忆” ✨<br>
+            🛒 点击购买跳转淘宝 | 收藏后可长期保存</p>
+            <p>© 2025 木韵千年 · 古韵家具百科 | 初学者友好·图文结合</p>
+        </div>
+    </div>
+</footer>
+
+<!-- 回到顶部按钮 -->
+<button class="go-top" id="goTopBtn" aria-label="回到顶部">↑</button>
+
+<script>
+    // ---------- 实时定位高亮（基于元素中心点接近屏幕中央）----------
+    (function() {
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = ['chair', 'table', 'bed', 'cabinet'].map(id => document.getElementById(id));
+        
+        function setActiveLink(activeId) {
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === '#' + activeId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+        
+        function getActiveSectionByCenter() {
+            const viewportCenter = window.innerHeight / 2;
+            let bestSection = null;
+            let minDistance = Infinity;
+            sections.forEach(section => {
+                if (!section) return;
+                const rect = section.getBoundingClientRect();
+                const sectionCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(sectionCenter - viewportCenter);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    bestSection = section.id;
+                }
+            });
+            return bestSection;
+        }
+        
+        let ticking = false;
+        function updateActive() {
+            const activeId = getActiveSectionByCenter();
+            if (activeId) setActiveLink(activeId);
+            ticking = false;
+        }
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateActive);
+                ticking = true;
+            }
+        });
+        window.addEventListener('resize', () => {
+            const activeId = getActiveSectionByCenter();
+            if (activeId) setActiveLink(activeId);
+        });
+        window.addEventListener('load', () => {
+            const activeId = getActiveSectionByCenter();
+            if (activeId) setActiveLink(activeId);
+        });
+    })();
+
+    // ---------- 平滑锚点导航（保留原有）----------
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId.startsWith('#')) {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    });
+
+    // ---------- 收藏功能（基于localStorage）----------
+    function initFavorites() {
+        const favorites = JSON.parse(localStorage.getItem('furniture_favorites') || '[]');
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            const id = btn.getAttribute('data-id');
+            if (favorites.includes(id)) {
+                btn.classList.add('active');
+                btn.innerHTML = '❤️';
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '♡';
+            }
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                let favs = JSON.parse(localStorage.getItem('furniture_favorites') || '[]');
+                if (favs.includes(id)) {
+                    favs = favs.filter(f => f !== id);
+                    btn.classList.remove('active');
+                    btn.innerHTML = '♡';
+                    alert('已取消收藏');
+                } else {
+                    favs.push(id);
+                    btn.classList.add('active');
+                    btn.innerHTML = '❤️';
+                    alert('已加入收藏夹');
+                }
+                localStorage.setItem('furniture_favorites', JSON.stringify(favs));
+            });
+        });
+    }
+    initFavorites();
+
+    // ---------- 回到顶部按钮 ----------
+    const goTopBtn = document.getElementById('goTopBtn');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+            goTopBtn.classList.add('show');
+        } else {
+            goTopBtn.classList.remove('show');
+        }
+    });
+    goTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ---------- 邮箱订阅（模拟）----------
+    document.getElementById('subscribeBtn').addEventListener('click', () => {
+        const emailInput = document.getElementById('newsEmail');
+        const email = emailInput.value.trim();
+        if (email && email.includes('@')) {
+            alert(`感谢订阅！我们将向 ${email} 发送最新家具资讯。`);
+            emailInput.value = '';
+        } else {
+            alert('请输入有效的邮箱地址。');
+        }
+    });
+</script>
+</body>
+</html>
