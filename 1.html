@@ -1,0 +1,3199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心动交友</title>
+    <!-- Font Awesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #ff006e;
+            --accent-color: #fb5607;
+            --text-color: #2d3748;
+            --light-text: #718096;
+            --background-color: #f7fafc;
+            --card-bg: #ffffff;
+            --border-radius: 20px;
+            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header styles */
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .welcome-header h1 {
+            color: var(--primary-color);
+            font-size: 2.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 0;
+        }
+
+        .tagline {
+            color: var(--light-text);
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .main-nav ul {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            text-decoration: none;
+            color: var(--light-text);
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .welcome-header h1 i {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        #user-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #user-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .login-btn, .logout-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(58, 134, 255, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 8px rgba(58, 134, 255, 0.3);
+        }
+
+        .logout-btn {
+            background-color: #edf2f7;
+            color: var(--text-color);
+        }
+
+        .logout-btn:hover {
+            background-color: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        .logout-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Button ripple effect */
+        .login-btn::before, .logout-btn::before, .heart-btn::before, .profile-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .login-btn:active::before, .logout-btn:active::before, .heart-btn:active::before, .profile-btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Search container */
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 16px 24px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            background: var(--card-bg);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        #search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(58, 134, 255, 0.2);
+        }
+
+        #search-input:focus + i {
+            color: var(--primary-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-text);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        /* Main content */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .user-cards {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+        }
+
+        /* User card */
+        .user-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .user-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-header {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .user-card:hover .card-header img {
+            transform: scale(1.05);
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+        }
+
+        .card-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .online-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #38a169;
+            box-shadow: 0 0 0 2px rgba(56, 161, 105, 0.5);
+        }
+
+        .user-distance {
+            font-size: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .card-overlay h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .card-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .user-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 16px 0;
+            padding: 12px;
+            background-color: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .stat span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .user-details {
+            margin-bottom: 20px;
+        }
+
+        .user-details p {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        .user-details p strong {
+            color: var(--primary-color);
+        }
+
+        .hobbies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .hobby-tag {
+            background-color: #f7fafc;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--light-text);
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid #e2e8f0;
+        }
+
+        .hobby-tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+
+        .heart-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--secondary-color), #d90466);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(255, 0, 110, 0.3);
+        }
+
+        .heart-btn:hover:not(.hearted) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 0, 110, 0.4);
+        }
+
+        .heart-btn.hearted {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+            cursor: not-allowed;
+            box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+        }
+
+        .heart-btn.hearted i {
+            transform: scale(1.2);
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+        }
+
+        /* Card actions */
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .profile-btn {
+            flex: 1;
+            padding: 12px;
+            background-color: #f7fafc;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .profile-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .heart-btn {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heart-btn:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 8px rgba(255, 0, 110, 0.3);
+        }
+
+        .profile-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-btn:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 8px rgba(58, 134, 255, 0.3);
+        }
+
+        /* Profile modal */
+        .profile-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .profile-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .profile-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .profile-modal.active .profile-content {
+            transform: translateY(0);
+        }
+
+        .profile-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+            border: 4px solid white;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .profile-info {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            margin-bottom: 16px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f7fafc;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-top: 4px;
+        }
+
+        .profile-body {
+            margin-bottom: 32px;
+        }
+
+        .profile-section {
+            margin-bottom: 24px;
+        }
+
+        .profile-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-section p {
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        .profile-hobbies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .profile-hobby {
+            background-color: #f7fafc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--light-text);
+            font-weight: 500;
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .profile-action-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .message-btn {
+            background: linear-gradient(135deg, var(--primary-color), #2563eb);
+            color: white;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .message-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(58, 134, 255, 0.4);
+        }
+
+        .close-profile-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-text);
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-profile-btn:hover {
+            color: var(--text-color);
+            background-color: #f7fafc;
+        }
+
+        /* Liked list */
+        .liked-list {
+            width: 340px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            transition: var(--transition);
+        }
+
+        .liked-list:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .liked-list h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+        }
+
+        .liked-list h2 i {
+            background: linear-gradient(135deg, var(--secondary-color), #d90466);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .liked-count {
+            background: linear-gradient(135deg, var(--secondary-color), #d90466);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 0, 110, 0.3);
+        }
+
+        .liked-items {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .liked-items::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .liked-items::-webkit-scrollbar-track {
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+
+        .liked-items::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .liked-items::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e0;
+        }
+
+        .liked-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #f7fafc;
+            transition: var(--transition);
+        }
+
+        .liked-item:hover {
+            transform: translateX(4px);
+            background-color: rgba(58, 134, 255, 0.05);
+            border-radius: 12px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .liked-item:last-child {
+            border-bottom: none;
+        }
+
+        .liked-item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .liked-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .liked-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .liked-avatar .online-status {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #38a169;
+            box-shadow: 0 0 0 2px white;
+        }
+
+        .liked-item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .liked-item-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .liked-item-name strong {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .liked-item-age {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            background-color: #f7fafc;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .liked-item-location {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            margin: 0;
+        }
+
+        .liked-item-hobbies {
+            display: flex;
+            gap: 4px;
+        }
+
+        .hobby-tag.small {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+        }
+
+        .liked-item-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .message-btn.small {
+            background: linear-gradient(135deg, var(--primary-color), #2563eb);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(58, 134, 255, 0.3);
+        }
+
+        .message-btn.small:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(58, 134, 255, 0.4);
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-btn:hover {
+            color: #e53e3e;
+            background-color: #fed7d7;
+            transform: scale(1.1);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--light-text);
+            font-size: 1.1rem;
+            background: #f7fafc;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        /* Auth container */
+        .auth-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-form {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-header h2 {
+            color: var(--text-color);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .auth-header p {
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f7fafc;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--light-text);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--primary-color);
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            background: #f7fafc;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.1);
+            background: white;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(58, 134, 255, 0.4);
+        }
+
+        .form-toggle {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .form-toggle a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .form-toggle a:hover {
+            text-decoration: underline;
+            color: var(--secondary-color);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-text);
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: var(--text-color);
+            background-color: #f7fafc;
+        }
+
+        .form-error {
+            color: #e53e3e;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .welcome-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .main-nav ul {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .welcome-header {
+                margin-bottom: 32px;
+            }
+
+            .welcome-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .tagline {
+                font-size: 0.95rem;
+            }
+
+            .main-nav ul {
+                gap: 4px;
+            }
+
+            .nav-link {
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
+
+            .nav-link i {
+                font-size: 0.9rem;
+            }
+
+            .user-section {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            #user-info {
+                padding: 10px 16px;
+            }
+
+            .search-container {
+                margin-bottom: 32px;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .liked-list {
+                width: 100%;
+                position: relative;
+                top: 0;
+                margin-top: 32px;
+            }
+
+            .auth-form {
+                margin: 16px;
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-link span {
+                display: none;
+            }
+
+            .nav-link {
+                padding: 8px;
+                border-radius: 50%;
+            }
+
+            .nav-link i {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Footer styles */
+        .site-footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-section h3 i {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-section h4 {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer-section p {
+            color: var(--light-text);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f7fafc;
+            color: var(--light-text);
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-color);
+            padding-left: 8px;
+        }
+
+        .app-download {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background-color: #f7fafc;
+            color: var(--text-color);
+            border-radius: 10px;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #f7fafc;
+        }
+
+        .footer-bottom p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .site-footer {
+                padding: 40px 0 20px;
+                margin-top: 60px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-section {
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .app-download {
+                align-items: center;
+            }
+
+            .download-btn {
+                width: 200px;
+                justify-content: center;
+            }
+        }
+
+        /* Animation for page load */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .user-card, .liked-list, .search-container, .welcome-header, .site-footer {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .user-card:nth-child(1) { animation-delay: 0.1s; }
+        .user-card:nth-child(2) { animation-delay: 0.2s; }
+        .user-card:nth-child(3) { animation-delay: 0.3s; }
+        .user-card:nth-child(4) { animation-delay: 0.4s; }
+        .user-card:nth-child(5) { animation-delay: 0.5s; }
+        .user-card:nth-child(6) { animation-delay: 0.6s; }
+        .site-footer { animation-delay: 0.7s; }
+
+        /* Scroll animations */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Sticky header */
+        .welcome-header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(247, 250, 252, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+
+        .welcome-header.scrolled {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+        }
+
+        /* Floating Music Player Styles */
+        .floating-music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .floating-player-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(58, 134, 255, 0.95), rgba(255, 0, 110, 0.95));
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(0);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        .floating-music-player.collapsed .floating-player-container {
+            transform: translateY(calc(100% + 60px));
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Vinyl Record Styles */
+        .vinyl-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            perspective: 1000px;
+        }
+
+        .vinyl {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1a1a1a, #333, #1a1a1a, #333, #1a1a1a);
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        .vinyl::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: repeating-radial-gradient(
+                circle at center,
+                transparent 0px,
+                transparent 2px,
+                rgba(255, 255, 255, 0.03) 3px,
+                transparent 4px
+            );
+        }
+
+        .vinyl::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%
+            );
+        }
+
+        .vinyl.playing {
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .vinyl-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .vinyl-center {
+            width: 30%;
+            height: 30%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .vinyl-screatches {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .scratch {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            transform-origin: center;
+        }
+
+        .scratch-1 {
+            width: 2px;
+            height: 100%;
+            left: 25%;
+            transform: rotate(45deg);
+        }
+
+        .scratch-2 {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: rotate(90deg);
+        }
+
+        .scratch-3 {
+            width: 2px;
+            height: 100%;
+            left: 75%;
+            transform: rotate(135deg);
+        }
+
+        .scratch-4 {
+            width: 2px;
+            height: 100%;
+            left: 10%;
+            transform: rotate(180deg);
+        }
+
+        /* Tonearm Styles */
+        .tonearm-wrapper {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 60px;
+            height: 120px;
+            pointer-events: none;
+        }
+
+        .tonearm {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-origin: 85% 15%;
+            transform: rotate(-30deg);
+            transition: transform 0.5s ease;
+        }
+
+        .tonearm.playing {
+            transform: rotate(0deg);
+        }
+
+        .tonearm-base {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #666, #999);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .tonearm-arm {
+            position: absolute;
+            top: 15px;
+            right: 5px;
+            width: 4px;
+            height: 90px;
+            background: linear-gradient(to bottom, #888, #666);
+            border-radius: 2px;
+            transform: rotate(25deg);
+            transform-origin: top center;
+        }
+
+        .tonearm-head {
+            position: absolute;
+            bottom: 5px;
+            left: -3px;
+            width: 10px;
+            height: 20px;
+            background: linear-gradient(135deg, #666, #999);
+            border-radius: 2px;
+            transform: rotate(25deg);
+        }
+
+        /* Player Info Styles */
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 200px;
+        }
+
+        .track-info {
+            text-align: center;
+        }
+
+        .track-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .track-artist {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .control-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .play-btn {
+            width: 44px;
+            height: 44px;
+            background: white;
+            color: var(--primary-color);
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn:hover {
+            background: #f0f0f0;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .progress-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .volume-control i {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .volume-control i:hover {
+            color: white;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Playlist Styles */
+        .playlist {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            width: 320px;
+            max-height: 450px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 10000;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .playlist.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f7fafc;
+        }
+
+        .playlist-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .playlist-header h3 i {
+            color: var(--primary-color);
+        }
+
+        .close-playlist-btn {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-playlist-btn:hover {
+            color: #e53e3e;
+            background-color: #fed7d7;
+        }
+
+        .playlist-items {
+            max-height: 380px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .playlist-item:hover {
+            background-color: #f7fafc;
+        }
+
+        .playlist-item.active {
+            background-color: rgba(58, 134, 255, 0.1);
+        }
+
+        .playlist-item-art {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .playlist-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .playlist-item-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-item-artist {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-item-duration {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        .playlist-toggle-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 12px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(58, 134, 255, 0.4);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .playlist-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(58, 134, 255, 0.5);
+        }
+
+        .expand-player-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 10px 15px;
+            border-radius: 20px 0 0 0;
+            box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .expand-player-btn:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .floating-music-player.collapsed .expand-player-btn i {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 768px) {
+            .floating-player-container {
+                padding: 15px;
+                gap: 15px;
+            }
+            
+            .vinyl-wrapper {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .track-name {
+                font-size: 0.9rem;
+            }
+            
+            .track-artist {
+                font-size: 0.8rem;
+            }
+            
+            .control-btn {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .play-btn {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .playlist {
+                width: 280px;
+                right: -20px;
+            }
+            
+            .player-info {
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="welcome-header">
+            <div class="brand-section">
+                <h1><i class="fas fa-heart"></i> 心动交友</h1>
+                <p class="tagline">找到属于你的那个TA，开启浪漫之旅</p>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="nav-link active"><i class="fas fa-home"></i> <span>首页</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-users"></i> <span>推荐</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-heart"></i> <span>心动</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-comment"></i> <span>消息</span></a></li>
+                </ul>
+            </nav>
+            <div class="user-section">
+                <div id="user-info" style="display: none;">
+                    <div class="user-avatar" id="user-avatar">
+                        <img src="https://picsum.photos/200/200?random=1" alt="用户头像">
+                    </div>
+                    <span id="user-name"></span>
+                    <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> 退出</button>
+                </div>
+                <button class="login-btn" id="login-btn"><i class="fas fa-user"></i> 登录/注册</button>
+            </div>
+        </header>
+
+        <div class="search-container scroll-animate">
+            <input type="text" id="search-input" placeholder="搜索姓名或兴趣爱好...">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <div class="main-content">
+            <div class="user-cards scroll-animate">
+                <div class="cards-container" id="cards-container">
+                    <!-- 动态生成用户卡片 -->
+                </div>
+            </div>
+
+            <div class="liked-list scroll-animate">
+                <h2><i class="fas fa-heart"></i> 心动列表 <span class="liked-count" id="liked-count">0</span></h2>
+                <div class="liked-items" id="liked-items">
+                    <!-- 动态生成心动列表 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录/注册表单 -->
+    <div class="auth-container" id="auth-container" style="display: none;">
+        <div class="auth-form">
+            <button class="close-btn" id="close-btn">&times;</button>
+            <div class="auth-header">
+                <h2>心动交友</h2>
+                <p>找到属于你的那个TA</p>
+            </div>
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">登录</div>
+                <div class="auth-tab" data-tab="register">注册</div>
+            </div>
+            <!-- 登录表单 -->
+            <div class="form-content" id="login-form">
+                <div class="form-group">
+                    <label for="login-email">邮箱</label>
+                    <input type="email" id="login-email" placeholder="请输入邮箱">
+                    <div class="form-error" id="login-email-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">密码</label>
+                    <input type="password" id="login-password" placeholder="请输入密码">
+                    <div class="form-error" id="login-password-error"></div>
+                </div>
+                <button class="auth-btn" id="login-submit">登录</button>
+                <div class="form-toggle">
+                    还没有账号？ <a href="#" id="switch-to-register">立即注册</a>
+                </div>
+            </div>
+            <!-- 注册表单 -->
+            <div class="form-content" id="register-form" style="display: none;">
+                <div class="form-group">
+                    <label for="register-name">姓名</label>
+                    <input type="text" id="register-name" placeholder="请输入姓名">
+                    <div class="form-error" id="register-name-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">邮箱</label>
+                    <input type="email" id="register-email" placeholder="请输入邮箱">
+                    <div class="form-error" id="register-email-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">密码</label>
+                    <input type="password" id="register-password" placeholder="请输入密码">
+                    <div class="form-error" id="register-password-error"></div>
+                </div>
+                <button class="auth-btn" id="register-submit">注册</button>
+                <div class="form-toggle">
+                    已有账号？ <a href="#" id="switch-to-login">立即登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 个人资料模态框 -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-content">
+            <button class="close-profile-btn" id="close-profile-btn">&times;</button>
+            <div class="profile-header">
+                <div class="profile-avatar" id="profile-avatar">
+                    <img src="" alt="用户头像">
+                </div>
+                <h2 class="profile-name" id="profile-name"></h2>
+                <p class="profile-info" id="profile-info"></p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">心动</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">粉丝</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">匹配</div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="profile-section">
+                    <h3><i class="fas fa-info-circle"></i> 个人简介</h3>
+                    <p id="profile-bio">这个人很懒，还没有填写个人简介</p>
+                </div>
+                <div class="profile-section">
+                    <h3><i class="fas fa-heart"></i> 兴趣爱好</h3>
+                    <div class="profile-hobbies" id="profile-hobbies">
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="profile-action-btn message-btn"><i class="fas fa-comment"></i> 发消息</button>
+                <button class="profile-action-btn heart-btn" id="profile-heart-btn"><i class="fas fa-heart"></i> 心动</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 虚拟用户数据
+        const users = [
+            {
+                id: 1,
+                name: "张三",
+                age: 25,
+                city: "北京",
+                profession: "软件工程师",
+                hobbies: ["旅游", "阅读", "健身"],
+                avatar: "https://picsum.photos/400/300?random=1",
+                profile: "https://picsum.photos/200/200?random=1",
+                bio: "热爱技术，喜欢旅行，希望找到一个志同道合的伴侣。"
+            },
+            {
+                id: 2,
+                name: "李四",
+                age: 28,
+                city: "上海",
+                profession: "设计师",
+                hobbies: ["绘画", "音乐", "摄影"],
+                avatar: "https://picsum.photos/400/300?random=2",
+                profile: "https://picsum.photos/200/200?random=2",
+                bio: "专注于UI/UX设计，喜欢用镜头记录生活中的美好瞬间。"
+            },
+            {
+                id: 3,
+                name: "王五",
+                age: 23,
+                city: "广州",
+                profession: "教师",
+                hobbies: ["瑜伽", "烹饪", "旅行"],
+                avatar: "https://picsum.photos/400/300?random=3",
+                profile: "https://picsum.photos/200/200?random=3",
+                bio: "小学教师，喜欢瑜伽和烹饪，希望找到一个温柔体贴的人。"
+            },
+            {
+                id: 4,
+                name: "赵六",
+                age: 30,
+                city: "深圳",
+                profession: "销售",
+                hobbies: ["足球", "篮球", "美食"],
+                avatar: "https://picsum.photos/400/300?random=4",
+                profile: "https://picsum.photos/200/200?random=4",
+                bio: "销售经理，热爱运动，是个美食爱好者，喜欢尝试各种新餐厅。"
+            },
+            {
+                id: 5,
+                name: "钱七",
+                age: 26,
+                city: "杭州",
+                profession: "医生",
+                hobbies: ["跑步", "游泳", "阅读"],
+                avatar: "https://picsum.photos/400/300?random=5",
+                profile: "https://picsum.photos/200/200?random=5",
+                bio: "内科医生，喜欢运动和阅读，希望找到一个理解医生工作的人。"
+            },
+            {
+                id: 6,
+                name: "孙八",
+                age: 27,
+                city: "成都",
+                profession: "程序员",
+                hobbies: ["游戏", "动漫", "编程"],
+                avatar: "https://picsum.photos/400/300?random=6",
+                profile: "https://picsum.photos/200/200?random=6",
+                bio: "全栈工程师，热爱编程和游戏，是个动漫迷，希望找到一个共同爱好者。"
+            }
+        ];
+
+        // 心动列表
+        let likedUsers = [];
+
+        // DOM 元素
+        const cardsContainer = document.getElementById('cards-container');
+        const likedItems = document.getElementById('liked-items');
+        const likedCount = document.getElementById('liked-count');
+        const searchInput = document.getElementById('search-input');
+
+        // 初始化页面
+        function init() {
+            renderUserCards(users);
+            updateLikedList();
+        }
+
+        // 渲染用户卡片
+        function renderUserCards(usersToRender) {
+            cardsContainer.innerHTML = '';
+
+            if (usersToRender.length === 0) {
+                cardsContainer.innerHTML = '<div class="no-results">没有找到匹配的用户</div>';
+                return;
+            }
+
+            usersToRender.forEach(user => {
+                const card = document.createElement('div');
+                card.className = 'user-card';
+                card.dataset.id = user.id;
+
+                // 检查用户是否已在心动列表中
+                const isLiked = likedUsers.some(likedUser => likedUser.id === user.id);
+
+                // 生成兴趣爱好标签
+                const hobbyTags = user.hobbies.map(hobby => `
+                    <span class="hobby-tag">${hobby}</span>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <img src="${user.avatar}" alt="${user.name}">
+                        <div class="card-overlay">
+                            <div class="card-header-top">
+                                <span class="online-status"></span>
+                                <span class="user-distance">1.2km</span>
+                            </div>
+                            <h3>${user.name}, ${user.age}</h3>
+                            <p>${user.city} · ${user.profession}</p>
+                            <div class="user-tags">
+                                <span class="tag">${user.hobbies[0]}</span>
+                                <span class="tag">${user.hobbies[1]}</span>
+                                <span class="tag">+${user.hobbies.length - 2}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="user-details">
+                            <p><strong>兴趣爱好:</strong></p>
+                            <div class="hobbies">
+                                ${hobbyTags}
+                            </div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat">
+                                <i class="fas fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-comment"></i>
+                                <span>32</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-heart"></i>
+                                <span>156</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="profile-btn" data-id="${user.id}">
+                                <i class="fas fa-user-circle"></i> 查看资料
+                            </button>
+                            <button class="heart-btn ${isLiked ? 'hearted' : ''}" ${isLiked ? 'disabled' : ''}>
+                                <i class="fas ${isLiked ? 'fa-check' : 'fa-heart'}"></i>
+                                ${isLiked ? '已心动' : '心动'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // 添加心动按钮事件监听
+                const heartBtn = card.querySelector('.heart-btn');
+                if (!isLiked) {
+                    heartBtn.addEventListener('click', () => {
+                        addToLiked(user);
+                    });
+                }
+
+                // 添加查看资料按钮事件监听
+                const profileBtn = card.querySelector('.profile-btn');
+                profileBtn.addEventListener('click', () => {
+                    showProfile(user);
+                });
+
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        // 添加到心动列表
+        function addToLiked(user) {
+            if (!likedUsers.some(likedUser => likedUser.id === user.id)) {
+                likedUsers.push(user);
+                updateLikedList();
+                updateUserCardStatus(user.id, true);
+            }
+        }
+
+        // 从心动列表移除
+        function removeFromLiked(userId) {
+            likedUsers = likedUsers.filter(user => user.id !== userId);
+            updateLikedList();
+            updateUserCardStatus(userId, false);
+        }
+
+        // 更新用户卡片状态
+        function updateUserCardStatus(userId, isLiked) {
+            const card = document.querySelector(`.user-card[data-id="${userId}"]`);
+            if (card) {
+                const heartBtn = card.querySelector('.heart-btn');
+                heartBtn.className = `heart-btn ${isLiked ? 'hearted' : ''}`;
+                heartBtn.disabled = isLiked;
+                heartBtn.innerHTML = `
+                    <i class="fas ${isLiked ? 'fa-check' : 'fa-heart'}"></i>
+                    ${isLiked ? '已心动' : '心动'}
+                `;
+
+                if (!isLiked) {
+                    heartBtn.addEventListener('click', () => {
+                        const user = users.find(u => u.id === userId);
+                        addToLiked(user);
+                    });
+                }
+            }
+        }
+
+        // 更新心动列表
+        function updateLikedList() {
+            likedItems.innerHTML = '';
+            likedCount.textContent = likedUsers.length;
+
+            if (likedUsers.length === 0) {
+                likedItems.innerHTML = '<div class="no-results">还没有心动的人</div>';
+                return;
+            }
+
+            likedUsers.forEach(user => {
+                const item = document.createElement('div');
+                item.className = 'liked-item';
+                item.dataset.id = user.id;
+
+                item.innerHTML = `
+                    <div class="liked-item-info">
+                        <div class="liked-avatar">
+                            <img src="${user.profile}" alt="${user.name}">
+                            <span class="online-status"></span>
+                        </div>
+                        <div class="liked-item-details">
+                            <div class="liked-item-name">
+                                <strong>${user.name}</strong>
+                                <span class="liked-item-age">${user.age}岁</span>
+                            </div>
+                            <p class="liked-item-location">${user.city} · ${user.profession}</p>
+                            <div class="liked-item-hobbies">
+                                ${user.hobbies.slice(0, 2).map(hobby => `<span class="hobby-tag small">${hobby}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="liked-item-actions">
+                        <button class="message-btn small" title="发消息">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="remove-btn" title="移除">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+                // 添加移除按钮事件监听
+                const removeBtn = item.querySelector('.remove-btn');
+                removeBtn.addEventListener('click', () => {
+                    removeFromLiked(user.id);
+                });
+
+                // 添加消息按钮事件监听
+                const messageBtn = item.querySelector('.message-btn');
+                messageBtn.addEventListener('click', () => {
+                    showProfile(user);
+                });
+
+                likedItems.appendChild(item);
+            });
+        }
+
+        // 搜索功能
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredUsers = users.filter(user => {
+                // 搜索姓名或兴趣爱好
+                return user.name.toLowerCase().includes(searchTerm) ||
+                       user.hobbies.some(hobby => hobby.toLowerCase().includes(searchTerm));
+            });
+            renderUserCards(filteredUsers);
+        });
+
+        // 登录/注册功能
+        const authContainer = document.getElementById('auth-container');
+        const loginBtn = document.getElementById('login-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userInfo = document.getElementById('user-info');
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        
+        // 表单切换
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        
+        // 登录表单元素
+        const loginEmail = document.getElementById('login-email');
+        const loginPassword = document.getElementById('login-password');
+        const loginEmailError = document.getElementById('login-email-error');
+        const loginPasswordError = document.getElementById('login-password-error');
+        const loginSubmit = document.getElementById('login-submit');
+        
+        // 注册表单元素
+        const registerName = document.getElementById('register-name');
+        const registerEmail = document.getElementById('register-email');
+        const registerPassword = document.getElementById('register-password');
+        const registerNameError = document.getElementById('register-name-error');
+        const registerEmailError = document.getElementById('register-email-error');
+        const registerPasswordError = document.getElementById('register-password-error');
+        const registerSubmit = document.getElementById('register-submit');
+        
+        // 打开登录/注册表单
+        loginBtn.addEventListener('click', () => {
+            authContainer.style.display = 'flex';
+            // 添加动画效果
+            authContainer.style.opacity = '0';
+            setTimeout(() => {
+                authContainer.style.opacity = '1';
+            }, 10);
+        });
+        
+        // 关闭登录/注册表单
+        closeBtn.addEventListener('click', () => {
+            authContainer.style.opacity = '0';
+            setTimeout(() => {
+                authContainer.style.display = 'none';
+                clearFormErrors();
+            }, 300);
+        });
+        
+        // 切换表单
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                authTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const tabName = tab.dataset.tab;
+                if (tabName === 'login') {
+                    loginForm.style.display = 'block';
+                    registerForm.style.display = 'none';
+                } else {
+                    loginForm.style.display = 'none';
+                    registerForm.style.display = 'block';
+                }
+                clearFormErrors();
+            });
+        });
+        
+        // 切换到注册表单
+        switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            authTabs[1].click();
+        });
+        
+        // 切换到登录表单
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            authTabs[0].click();
+        });
+        
+        // 表单验证
+        function validateLoginForm() {
+            let isValid = true;
+            
+            // 验证邮箱
+            if (!loginEmail.value) {
+                loginEmailError.textContent = '请输入邮箱';
+                isValid = false;
+            } else if (!isValidEmail(loginEmail.value)) {
+                loginEmailError.textContent = '请输入有效的邮箱地址';
+                isValid = false;
+            } else {
+                loginEmailError.textContent = '';
+            }
+            
+            // 验证密码
+            if (!loginPassword.value) {
+                loginPasswordError.textContent = '请输入密码';
+                isValid = false;
+            } else if (loginPassword.value.length < 6) {
+                loginPasswordError.textContent = '密码长度至少6位';
+                isValid = false;
+            } else {
+                loginPasswordError.textContent = '';
+            }
+            
+            return isValid;
+        }
+        
+        function validateRegisterForm() {
+            let isValid = true;
+            
+            // 验证姓名
+            if (!registerName.value) {
+                registerNameError.textContent = '请输入姓名';
+                isValid = false;
+            } else {
+                registerNameError.textContent = '';
+            }
+            
+            // 验证邮箱
+            if (!registerEmail.value) {
+                registerEmailError.textContent = '请输入邮箱';
+                isValid = false;
+            } else if (!isValidEmail(registerEmail.value)) {
+                registerEmailError.textContent = '请输入有效的邮箱地址';
+                isValid = false;
+            } else {
+                registerEmailError.textContent = '';
+            }
+            
+            // 验证密码
+            if (!registerPassword.value) {
+                registerPasswordError.textContent = '请输入密码';
+                isValid = false;
+            } else if (registerPassword.value.length < 6) {
+                registerPasswordError.textContent = '密码长度至少6位';
+                isValid = false;
+            } else {
+                registerPasswordError.textContent = '';
+            }
+            
+            return isValid;
+        }
+        
+        // 邮箱验证
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        // 清除表单错误
+        function clearFormErrors() {
+            loginEmailError.textContent = '';
+            loginPasswordError.textContent = '';
+            registerNameError.textContent = '';
+            registerEmailError.textContent = '';
+            registerPasswordError.textContent = '';
+        }
+        
+        // 登录
+        loginSubmit.addEventListener('click', () => {
+            if (validateLoginForm()) {
+                // 模拟登录成功
+                const user = {
+                    name: registerName.value || '用户',
+                    email: loginEmail.value,
+                    avatar: `https://picsum.photos/200/200?random=${Math.floor(Math.random() * 100)}`
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+                updateUserInfo(user);
+                authContainer.style.opacity = '0';
+                setTimeout(() => {
+                    authContainer.style.display = 'none';
+                    alert('登录成功！');
+                }, 300);
+            }
+        });
+        
+        // 注册
+        registerSubmit.addEventListener('click', () => {
+            if (validateRegisterForm()) {
+                // 模拟注册成功
+                const user = {
+                    name: registerName.value,
+                    email: registerEmail.value,
+                    avatar: `https://picsum.photos/200/200?random=${Math.floor(Math.random() * 100)}`
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+                updateUserInfo(user);
+                authContainer.style.opacity = '0';
+                setTimeout(() => {
+                    authContainer.style.display = 'none';
+                    alert('注册成功！');
+                }, 300);
+            }
+        });
+        
+        // 退出登录
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('user');
+            userInfo.style.display = 'none';
+            loginBtn.style.display = 'block';
+            alert('已退出登录');
+        });
+        
+        // 更新用户信息
+        function updateUserInfo(user) {
+            userInfo.style.display = 'flex';
+            loginBtn.style.display = 'none';
+            userName.textContent = user.name;
+            userAvatar.innerHTML = `<img src="${user.avatar}" alt="${user.name}">`;
+        }
+        
+        // 个人资料模态框功能
+        const profileModal = document.getElementById('profile-modal');
+        const closeProfileBtn = document.getElementById('close-profile-btn');
+        const profileName = document.getElementById('profile-name');
+        const profileInfo = document.getElementById('profile-info');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileBio = document.getElementById('profile-bio');
+        const profileHobbies = document.getElementById('profile-hobbies');
+        const profileHeartBtn = document.getElementById('profile-heart-btn');
+        let currentUser = null;
+
+        // 显示个人资料
+        function showProfile(user) {
+            currentUser = user;
+            profileName.textContent = `${user.name}, ${user.age}`;
+            profileInfo.textContent = `${user.city} · ${user.profession}`;
+            profileAvatar.innerHTML = `<img src="${user.avatar}" alt="${user.name}">`;
+            profileBio.textContent = user.bio || '这个人很懒，还没有填写个人简介';
+            
+            // 渲染兴趣爱好
+            profileHobbies.innerHTML = '';
+            user.hobbies.forEach(hobby => {
+                const hobbyElement = document.createElement('span');
+                hobbyElement.className = 'profile-hobby';
+                hobbyElement.textContent = hobby;
+                profileHobbies.appendChild(hobbyElement);
+            });
+            
+            // 更新心动按钮状态
+            const isLiked = likedUsers.some(likedUser => likedUser.id === user.id);
+            if (isLiked) {
+                profileHeartBtn.className = 'profile-action-btn heart-btn hearted';
+                profileHeartBtn.innerHTML = '<i class="fas fa-check"></i> 已心动';
+                profileHeartBtn.disabled = true;
+            } else {
+                profileHeartBtn.className = 'profile-action-btn heart-btn';
+                profileHeartBtn.innerHTML = '<i class="fas fa-heart"></i> 心动';
+                profileHeartBtn.disabled = false;
+            }
+            
+            // 显示模态框
+            profileModal.classList.add('active');
+        }
+
+        // 关闭个人资料模态框
+        function closeProfile() {
+            profileModal.classList.remove('active');
+            currentUser = null;
+        }
+
+        // 个人资料心动按钮点击事件
+        profileHeartBtn.addEventListener('click', () => {
+            if (currentUser) {
+                addToLiked(currentUser);
+                profileHeartBtn.className = 'profile-action-btn heart-btn hearted';
+                profileHeartBtn.innerHTML = '<i class="fas fa-check"></i> 已心动';
+                profileHeartBtn.disabled = true;
+            }
+        });
+
+        // 关闭按钮点击事件
+        closeProfileBtn.addEventListener('click', closeProfile);
+
+        // 点击模态框外部关闭
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                closeProfile();
+            }
+        });
+
+        // 检查本地存储中的用户信息
+        function checkUserLogin() {
+            const user = localStorage.getItem('user');
+            if (user) {
+                updateUserInfo(JSON.parse(user));
+            }
+        }
+
+        // 滚动动画功能
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.scroll-animate');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // 导航栏滚动效果
+        function handleHeaderScroll() {
+            const header = document.querySelector('.welcome-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        // 事件监听器
+        window.addEventListener('scroll', () => {
+            handleScrollAnimations();
+            handleHeaderScroll();
+        });
+
+        // 初始化
+        init();
+        checkUserLogin();
+        handleScrollAnimations();
+        handleHeaderScroll();
+
+        // 音乐播放器功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = new Audio();
+            const tracks = [
+                {
+                    name: "遇见",
+                    artist: "孙燕姿",
+                    duration: "4:20",
+                    // 使用免费音乐URL
+                    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                },
+                {
+                    name: "爱情转移",
+                    artist: "陈奕迅",
+                    duration: "4:15",
+                    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+                },
+                {
+                    name: "小幸运",
+                    artist: "田馥甄",
+                    duration: "4:10",
+                    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+                },
+                {
+                    name: "演员",
+                    artist: "薛之谦",
+                    duration: "4:25",
+                    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+                },
+                {
+                    name: "体面",
+                    artist: "于文文",
+                    duration: "4:05",
+                    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+                }
+            ];
+
+            let currentTrackIndex = 0;
+            let isPlaying = false;
+
+            // DOM元素
+            const vinyl = document.getElementById('vinyl');
+            const tonearm = document.getElementById('tonearm');
+            const playBtn = document.getElementById('play-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const trackName = document.getElementById('track-name');
+            const trackArtist = document.getElementById('track-artist');
+            const progress = document.getElementById('progress');
+            const progressBar = document.getElementById('progress-bar');
+            const currentTimeEl = document.getElementById('current-time');
+            const durationEl = document.getElementById('duration');
+            const volumeSlider = document.getElementById('volume-slider');
+            const volumeIcon = document.getElementById('volume-icon');
+            const playlist = document.getElementById('playlist');
+            const playlistItems = document.getElementById('playlist-items');
+            const playlistToggleBtn = document.getElementById('playlist-toggle-btn');
+            const closePlaylistBtn = document.getElementById('close-playlist-btn');
+
+            // 初始化播放列表
+            function initPlaylist() {
+                playlistItems.innerHTML = '';
+                tracks.forEach((track, index) => {
+                    const item = document.createElement('div');
+                    item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
+                    item.innerHTML = `
+                        <div class="playlist-item-art">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="playlist-item-info">
+                            <div class="playlist-item-name">${track.name}</div>
+                            <div class="playlist-item-artist">${track.artist}</div>
+                        </div>
+                        <div class="playlist-item-duration">${track.duration}</div>
+                    `;
+                    item.addEventListener('click', () => {
+                        currentTrackIndex = index;
+                        loadTrack(currentTrackIndex);
+                        playTrack();
+                    });
+                    playlistItems.appendChild(item);
+                });
+            }
+
+            // 加载歌曲
+            function loadTrack(index) {
+                const track = tracks[index];
+                audio.src = track.url;
+                trackName.textContent = track.name;
+                trackArtist.textContent = track.artist;
+                durationEl.textContent = track.duration;
+                
+                // 更新播放列表高亮
+                document.querySelectorAll('.playlist-item').forEach((item, i) => {
+                    item.classList.toggle('active', i === index);
+                });
+            }
+
+            // 播放歌曲
+            function playTrack() {
+                isPlaying = true;
+                vinyl.classList.add('playing');
+                tonearm.classList.add('playing');
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                audio.play().catch(error => {
+                    console.log('Auto-play was prevented:', error);
+                });
+            }
+
+            // 暂停歌曲
+            function pauseTrack() {
+                isPlaying = false;
+                vinyl.classList.remove('playing');
+                tonearm.classList.remove('playing');
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                audio.pause();
+            }
+
+            // 播放/暂停切换
+            playBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    pauseTrack();
+                } else {
+                    playTrack();
+                }
+            });
+
+            // 上一首
+            prevBtn.addEventListener('click', () => {
+                currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                loadTrack(currentTrackIndex);
+                if (isPlaying) {
+                    playTrack();
+                }
+            });
+
+            // 下一首
+            nextBtn.addEventListener('click', () => {
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                loadTrack(currentTrackIndex);
+                if (isPlaying) {
+                    playTrack();
+                }
+            });
+
+            // 更新进度条
+            audio.addEventListener('timeupdate', () => {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = percent + '%';
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            });
+
+            // 格式化时间
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            // 点击进度条跳转
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = percent * audio.duration;
+            });
+
+            // 音量控制
+            volumeSlider.addEventListener('input', (e) => {
+                audio.volume = e.target.value / 100;
+                updateVolumeIcon();
+            });
+
+            volumeIcon.addEventListener('click', () => {
+                if (audio.volume > 0) {
+                    audio.dataset.prevVolume = audio.volume;
+                    audio.volume = 0;
+                    volumeSlider.value = 0;
+                } else {
+                    audio.volume = audio.dataset.prevVolume || 0.7;
+                    volumeSlider.value = audio.volume * 100;
+                }
+                updateVolumeIcon();
+            });
+
+            function updateVolumeIcon() {
+                if (audio.volume === 0) {
+                    volumeIcon.className = 'fas fa-volume-mute';
+                } else if (audio.volume < 0.5) {
+                    volumeIcon.className = 'fas fa-volume-down';
+                } else {
+                    volumeIcon.className = 'fas fa-volume-up';
+                }
+            }
+
+            // 播放列表切换
+            playlistToggleBtn.addEventListener('click', () => {
+                playlist.classList.toggle('active');
+            });
+
+            closePlaylistBtn.addEventListener('click', () => {
+                playlist.classList.remove('active');
+            });
+
+            // 歌曲结束自动播放下一首
+            audio.addEventListener('ended', () => {
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            });
+
+            // 初始化
+            audio.volume = 0.7;
+            loadTrack(currentTrackIndex);
+            initPlaylist();
+
+            // 悬浮播放器展开/收起功能
+            const floatingPlayer = document.getElementById('floating-music-player');
+            const expandBtn = document.getElementById('expand-player-btn');
+
+            expandBtn.addEventListener('click', () => {
+                floatingPlayer.classList.toggle('collapsed');
+                if (floatingPlayer.classList.contains('collapsed')) {
+                    expandBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                } else {
+                    expandBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                }
+            });
+
+            // 默认展开状态，让用户可以直接看到和使用
+            floatingPlayer.classList.remove('collapsed');
+            expandBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        });
+    </script>
+
+    <footer class="site-footer scroll-animate">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>心动交友</h3>
+                    <p>找到属于你的那个TA，开启浪漫之旅</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-qq"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">推荐</a></li>
+                        <li><a href="#">心动</a></li>
+                        <li><a href="#">消息</a></li>
+                        <li><a href="#">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>帮助中心</h4>
+                    <ul>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">安全指南</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">用户协议</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>下载App</h4>
+                    <p>随时随地，找到你的心动对象</p>
+                    <div class="app-download">
+                        <a href="#" class="download-btn">
+                            <i class="fab fa-apple"></i> App Store
+                        </a>
+                        <a href="#" class="download-btn">
+                            <i class="fab fa-android"></i> Google Play
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 心动交友. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 悬浮音乐播放器 -->
+    <div class="floating-music-player" id="floating-music-player">
+        <div class="floating-player-container" id="floating-player-container">
+            <!-- 唱片部分 -->
+            <div class="vinyl-wrapper">
+                <div class="vinyl" id="vinyl">
+                    <div class="vinyl-label">
+                        <div class="vinyl-center"></div>
+                    </div>
+                    <div class="vinyl-screatches">
+                        <div class="scratch scratch-1"></div>
+                        <div class="scratch scratch-2"></div>
+                        <div class="scratch scratch-3"></div>
+                        <div class="scratch scratch-4"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 唱针部分 -->
+            <div class="tonearm-wrapper">
+                <div class="tonearm" id="tonearm">
+                    <div class="tonearm-base"></div>
+                    <div class="tonearm-arm"></div>
+                    <div class="tonearm-head"></div>
+                </div>
+            </div>
+            
+            <!-- 播放信息 -->
+            <div class="player-info">
+                <div class="track-info">
+                    <div class="track-name" id="track-name">选择一首歌曲</div>
+                    <div class="track-artist" id="track-artist">-</div>
+                </div>
+                <div class="player-controls">
+                    <button class="control-btn prev-btn" id="prev-btn"><i class="fas fa-backward"></i></button>
+                    <button class="control-btn play-btn" id="play-btn"><i class="fas fa-play"></i></button>
+                    <button class="control-btn next-btn" id="next-btn"><i class="fas fa-forward"></i></button>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                </div>
+                <div class="volume-control">
+                    <i class="fas fa-volume-up" id="volume-icon"></i>
+                    <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 播放列表 -->
+        <div class="playlist" id="playlist">
+            <div class="playlist-header">
+                <h3><i class="fas fa-list"></i> 播放列表</h3>
+                <button class="close-playlist-btn" id="close-playlist-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="playlist-items" id="playlist-items">
+                <!-- 动态生成播放列表项 -->
+            </div>
+        </div>
+        
+        <button class="playlist-toggle-btn" id="playlist-toggle-btn">
+            <i class="fas fa-list"></i>
+        </button>
+        
+        <button class="expand-player-btn" id="expand-player-btn">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </div>
+</body>
+</html>
